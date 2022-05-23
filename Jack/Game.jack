@@ -1,0 +1,118 @@
+class Game{
+field char currKey; //tecla atual pressionada
+field boolean start, last_pipe_ready, isColidindo;
+field int indice_cano, num_canos, i, bola_x, bola_y;
+
+field Cano c;
+field Array canos;
+field Bola bola;
+
+static int seedling;
+  //configs necessarias para o jogo iniciar
+  constructor Game new()
+  {
+    let start = false;
+    let num_canos = 5;
+    let indice_cano = 0;
+    let canos = Array.new(num_canos);
+    let canos[0] = Cano.new(491);
+    let seedling = 10;
+    let currKey = 0;
+    let bola = Bola.new(50,100);
+    return this;
+  }
+
+  //Roda o jogo enquanto não existir uma colisão
+  method void start()
+  {
+    while(true)
+    {
+      //aqui verifico se o usuario pressionou o W
+      let currKey = Keyboard.keyPressed();
+      if(currKey = 87)
+      {
+        do bola.moveBola(10);
+      }
+      else
+      {
+          do bola.moveBola(-15);
+      }
+
+      if(indice_cano < (num_canos - 1))
+      {
+        let c = canos[indice_cano];
+        let last_pipe_ready = c.novoCanoPronto();
+        if(last_pipe_ready)
+        {
+          let indice_cano = indice_cano + 1;
+          let canos[indice_cano] = Cano.new(491);
+          let c = canos[indice_cano];
+          do c.setSeed(seedling);
+          do c.novaAlturaCano();
+        }
+      }
+
+      /*faz os canos se moverem e checa se a minha bola colidiu*/
+      let bola_x = bola.getXLocation();
+      let bola_y = bola.getYLocation();
+      let i = 0;
+      while(i < (indice_cano + 1))
+      {
+        let c = canos[i];
+        do c.moveCano();
+
+        let isColidindo = c.isColidindo(bola_x, bola_y);
+        if(isColidindo)
+        {
+          do failScreen();
+          return;
+        }
+
+        /*Se nenhuma colisao for detectada ele soma mais pontos e continua o jogo*/
+        do bola.incrementScore(2);
+        let i = i + 1;
+      }
+
+      /* Atualiza meu seed */
+      if(seedling < 40)
+      {
+        let seedling = seedling + 1;
+      }
+      else
+      {
+        let seedling = 1;
+      }
+      do bola.desenharBola();
+
+      do Sys.wait(50);
+      do Screen.clearScreen();
+    }
+    return;
+  }
+
+  /*tela de fail, quando ele colide com o Cano*/
+  method void failScreen()
+  {
+    do Screen.clearScreen();
+    do Output.moveCursor(7,20);
+    do Output.printString("ERROU!");
+    do Output.moveCursor(9,20);
+    do Output.printString("Score:");
+    do Output.moveCursor(11,25);
+    do Output.printInt(bola.getScore());
+
+    //espera um tempo, antes de retornar para a tela de instruções novamente
+    do Sys.wait(3000);
+
+    do Screen.clearScreen();
+    return;
+  }
+
+  /*Retorna um numero de etapas que a bola foi no jogo, vou usar isso aqui no arquivo do Cano pra gerar 
+  um seed pseudoaleatorio*/
+  function int getSteps()
+  {
+    return seedling;
+  }
+
+}

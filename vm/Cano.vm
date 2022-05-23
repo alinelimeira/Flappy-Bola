@@ -1,0 +1,196 @@
+function Cano.new 0
+push constant 8
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 0
+push constant 10
+add
+pop this 1
+push constant 0
+pop this 7
+push constant 254
+pop this 2
+push constant 255
+pop this 3
+push constant 0
+pop this 5
+push constant 120
+pop this 6
+push pointer 0
+return
+function Cano.novoCanoPronto 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 392
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+goto IF_END0
+label IF_FALSE0
+push constant 0
+return
+label IF_END0
+function Cano.isColidindo 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 15
+add
+push this 0
+gt
+push argument 1
+push constant 15
+add
+push this 1
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 2
+push constant 15
+add
+push this 2
+gt
+push argument 2
+push constant 15
+add
+push this 6
+lt
+or
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+return
+function Cano.moveCano 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 19
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push constant 5
+sub
+pop this 0
+push this 1
+push constant 5
+sub
+pop this 1
+goto IF_END0
+label IF_FALSE0
+push pointer 0
+call Game.getSteps 0
+call Cano.setSeed 2
+pop temp 0
+push pointer 0
+call Cano.novaAlturaCano 1
+pop temp 0
+push constant 491
+pop this 0
+push constant 511
+pop this 1
+label IF_END0
+push pointer 0
+call Cano.desenharCano 1
+pop temp 0
+push constant 0
+return
+function Cano.desenharCano 0
+push argument 0
+pop pointer 0
+push this 0
+push this 2
+push this 1
+push this 3
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push this 5
+push this 1
+push this 6
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Cano.setSeed 0
+push argument 0
+pop pointer 0
+push this 4
+push constant 2
+call Math.divide 2
+push argument 1
+add
+push constant 2
+call Math.multiply 2
+push constant 5
+add
+push constant 4
+call Math.divide 2
+pop this 4
+label WHILE_EXP0
+push this 4
+push constant 90
+gt
+not
+if-goto WHILE_END0
+push this 4
+push constant 10
+sub
+pop this 4
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Cano.novaAlturaCano 0
+push argument 0
+pop pointer 0
+push constant 0
+pop this 5
+push constant 255
+pop this 3
+push this 7
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 120
+push this 4
+sub
+pop this 6
+push constant 205
+push this 4
+sub
+pop this 2
+push constant 0
+pop this 7
+goto IF_END0
+label IF_FALSE0
+push this 6
+push this 4
+sub
+pop this 6
+push this 2
+push this 4
+sub
+pop this 2
+push constant 0
+not
+pop this 7
+label IF_END0
+push constant 0
+return

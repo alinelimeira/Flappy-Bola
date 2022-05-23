@@ -1,0 +1,99 @@
+class Cano{
+  field int x1, x2, y1_bottom, y2_bottom, heightSeed, y1_top, y2_top;
+  field boolean limpa_atualizacao_atribuição;
+
+  /**Os Canos vao ter sempre 10px de largura 
+  e a altura é definida por um "pseudo random number generate" mais abaixo eu explico melhor*/
+  constructor Cano new(int x)
+  {
+    let x1 = x;
+    let x2 = x + 10;
+    let limpa_atualizacao_atribuição = false;
+    //localizacao de onde vou spawnar os Canos na parte de baixo (bottom) e na parte de cima (top)
+    // o y2_top nao pode ter uma diferença menor que 30 para o y1_bottom
+    let y1_bottom = 254;
+    let y2_bottom = 255;
+    let y1_top = 0;
+    let y2_top = 120;
+    return this;
+  }
+
+  method boolean novoCanoPronto()
+  {
+    if(x1 < 392){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  method boolean isColidindo(int x, int y)
+  {
+    //verificando colisão inferior e superior
+    if(((x+15) > x1) & ((x+15) < x2)){
+      if(((y+15) > y1_bottom) | ((y+15) < y2_top)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /*moveCano() move o Cano 5 pixeis para a esquerda, se o Cano estiver proximo da borda da esquerda da tela ele será resetado e iniciaria uma nova atribuição de altura e gap*/
+  method void moveCano()
+  {
+    if(x1 > 19)
+    {
+      let x1 = x1 - 5;
+      let x2 = x2 - 5;
+    }
+    else
+    {
+      do setSeed(Game.getSteps());
+      do novaAlturaCano();
+
+      let x1 = 491;
+      let x2 = 511;
+    }
+    do desenharCano();
+    return;
+  }
+
+  method void desenharCano()
+  {
+    do Screen.drawRectangle(x1,y1_bottom,x2,y2_bottom);
+    do Screen.drawRectangle(x1,y1_top,x2,y2_top);
+    return;
+  }
+
+
+  method void setSeed(int seed)
+  {
+    let heightSeed = (heightSeed/2 + seed*2 + 5)/4;
+    while(heightSeed > 90)
+    {
+      let heightSeed = heightSeed - 10;
+    }
+    return;
+  }
+
+
+  //dar ao Cano uma nova altura
+  method void novaAlturaCano()
+  {
+    let y1_top = 0;
+    let y2_bottom = 255;
+    if(limpa_atualizacao_atribuição)
+    {
+      let y2_top = 120 - heightSeed;
+      let y1_bottom = 205 - heightSeed;
+      let limpa_atualizacao_atribuição = false;
+    }
+    else
+    {
+      let y2_top = y2_top - heightSeed;
+      let y1_bottom = y1_bottom - heightSeed;
+      let limpa_atualizacao_atribuição = true;
+    }
+    return;
+  }
+}

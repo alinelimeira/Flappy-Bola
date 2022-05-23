@@ -1,0 +1,61 @@
+class Bola{
+  field int x, y, score;
+
+  constructor Bola new(int a, int b)
+  {
+    let x = a;
+    let y = b;
+    let score = 0;
+
+    return this;
+  }
+
+/*move o jogador com base na variacao de coordenadas de y*/
+  method void moveBola(int yChange)
+  {
+    let y = y - yChange;
+    return;
+  }
+
+  /*desenha o jogador e o seu score*/
+  method void desenharBola()
+  {
+    //o eixo x e y aqui dizem sobre o posicionamento da bola
+    if((y+15) > 255)
+    {
+      let y = 240;
+    }
+    if((y-15) < 0)
+    {
+      let y = 15;
+    }
+    do Screen.drawCircle(x,y,15);
+
+    //desenha o score
+    do Output.moveCursor(0,0);
+    do Output.printInt(score);
+    return;
+  }
+
+/*Metodos abaixo sao relativos ao score*/
+  method void incrementScore(int amount)
+  {
+    let score = score + amount;
+    return;
+  }
+  method int getScore()
+  {
+    return score;
+  }
+
+/*aqui vou pegar a localização atual do jogador que vou usar em outro lugar para verificar se colidiu com as bolas*/
+  method int getXLocation()
+  {
+    return x;
+  }
+  method int getYLocation()
+  {
+    return y;
+  }
+
+}

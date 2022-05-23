@@ -1,0 +1,38 @@
+//Aline Santana Limeira
+class Main{
+	function void main()
+	{
+		var Game g;
+		do Main.telaInicial();
+		//iniciando o jogo chamando o metodo game.new()
+		let g = Game.new();
+		do g.start();
+		do Main.main();
+		return;
+	}
+
+	//Roda minha tela de instrucoes enquanto o jogador não apertar o espaco/ascii32
+	function void telaInicial()
+	{
+		var char pressedKey;
+		let pressedKey = 0;
+
+		do Output.moveCursor(4,26);
+		do Output.printString("FLAPPY BOLA");
+		do Output.moveCursor(7,22);
+		do Output.printString("Para jogar pressione 'w' para subir");
+		do Output.moveCursor(8,22);
+		do Output.printString("e tente nao bater nos canos!!");
+		do Output.moveCursor(11,22);
+		do Output.printString("Aperte 'Espaco' para comecar");
+		
+		//ASCII - ESPACO=32
+		while(~(pressedKey = 32))
+		{
+			let pressedKey = Keyboard.keyPressed();
+		}
+
+		return;
+	}
+
+}
